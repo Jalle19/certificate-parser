@@ -37,3 +37,6 @@ echo 'Issuer:                  ' . $certificate->getIssuer() . PHP_EOL;
 echo 'Subject:                 ' . $certificate->getSubject() . PHP_EOL;
 echo 'Subject alternate names: ' . implode(', ', $certificate->getSubjectAlternativeNames()) . PHP_EOL;
 echo 'Valid until:             ' . $certificate->getValidTo()->format('r') . PHP_EOL;
+
+// We can also inspect the raw certificate directly
+$rawCertificate = $parser->getRawCertificate();

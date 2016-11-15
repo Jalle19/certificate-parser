@@ -26,12 +26,26 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testSuccessfulParse()
+    public function testGetParsedCertificate()
     {
         $parser = new Parser(new StreamSocketProvider('www.google.com'));
         $parser->parse();
 
         $this->assertInstanceOf(ParsedCertificate::class, $parser->getParsedCertificate());
+    }
+
+
+    /**
+     *
+     */
+    public function testGetRawCertificate()
+    {
+        $parser = new Parser(new StreamSocketProvider('www.google.com'));
+        $parser->parse();
+        $rawCertificate = $parser->getRawCertificate();
+
+        $this->assertArrayHasKey('name', $rawCertificate);
+        $this->assertArrayHasKey('subject', $rawCertificate);
     }
 
 }

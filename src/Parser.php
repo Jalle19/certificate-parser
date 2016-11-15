@@ -63,7 +63,7 @@ class Parser
      */
     public function getRawCertificate()
     {
-        return $this->rawCertificate;
+        return openssl_x509_parse($this->rawCertificate);
     }
 
 }
