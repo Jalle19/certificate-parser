@@ -1,0 +1,10 @@
+<phpunit>
+    <testsuites>
+        <testsuite name="certificate-parser">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <!--<logging>-->
+        <!--<log type="coverage-clover" target="build/logs/clover.xml" logIncompleteSkipped="false"/>-->
+    <!--</logging>-->
+</phpunit>
