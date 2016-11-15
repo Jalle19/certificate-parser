@@ -56,6 +56,17 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
+     * @expectedException \Jalle19\CertificateParser\Exception\UnknownErrorException
+     */
+    public function testUnknownException()
+    {
+        // Force a timeout to occur
+        $provider = new StreamSocketProvider('example.com', 443, 0);
+        $provider->getRawCertificate();
+    }
+
+
+    /**
      * @return array
      */
     public function properCertificateProvider()

@@ -64,7 +64,8 @@ try {
 } catch (DomainMismatchException $e) {
 
 } catch (UnknownErrorException $e) {
-    // Catch-all exception for errors that haven't been specifically handled
+    // Catch-all exception for errors that haven't been specifically handled. An example of these are various 
+    // connection-related errors, e.g. a timeout.
     var_dump($e->getMessage());
 }
 
