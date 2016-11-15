@@ -3,7 +3,6 @@
 namespace Jalle19\CertificateParser\Provider;
 
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
-use Jalle19\CertificateParser\Exception\InvalidUrlException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Exception\NoCertificateFoundException;
 use Jalle19\CertificateParser\Exception\UnknownErrorException;
@@ -26,7 +25,7 @@ class StreamSocketProvider implements ProviderInterface
     /**
      * @var string
      */
-    private $host;
+    private $hostname;
 
     /**
      * @var int
@@ -37,13 +36,15 @@ class StreamSocketProvider implements ProviderInterface
     /**
      * StreamSocketProvider constructor.
      *
-     * @param string $url
+     * @param string $hostname
+     * @param int    $port    (optional)
      * @param int    $timeout (optional)
      */
-    public function __construct($url, $timeout = self::DEFAULT_TIMEOUT_SECONDS)
+    public function __construct($hostname, $port = self::DEFAULT_PORT, $timeout = self::DEFAULT_TIMEOUT_SECONDS)
     {
-        $this->timeout = $timeout;
-        $this->parseUrl($url);
+        $this->hostname = $hostname;
+        $this->port     = $port;
+        $this->timeout  = $timeout;
     }
 
 
@@ -98,52 +99,9 @@ class StreamSocketProvider implements ProviderInterface
     /**
      * @return string
      */
-    public function getHost()
-    {
-        return $this->host;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getPort()
-    {
-        return $this->port;
-    }
-
-
-    /**
-     * @param string $url
-     *
-     * @throws InvalidUrlException
-     */
-    private function parseUrl($url)
-    {
-        $parsedUrl = parse_url($url);
-
-        if (array_key_exists('host', $parsedUrl)) {
-            $this->host = $parsedUrl['host'];
-        } elseif (array_key_exists('path', $parsedUrl) && !empty($parsedUrl['path'])) {
-            $this->host = $parsedUrl['path'];
-        } else {
-            throw new InvalidUrlException('Unable to parse the URL "' . $url . '""');
-        }
-
-        if (array_key_exists('port', $parsedUrl)) {
-            $this->port = $parsedUrl['port'];
-        } else {
-            $this->port = self::DEFAULT_PORT;
-        }
-    }
-
-
-    /**
-     * @return string
-     */
     private function getRequestUrl()
     {
-        return 'ssl://' . $this->getHost() . ':' . $this->getPort();
+        return 'ssl://' . $this->hostname . ':' . $this->port;
     }
 
 }

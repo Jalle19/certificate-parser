@@ -14,11 +14,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\InvalidUrlException
+     * @expectedException \Jalle19\CertificateParser\Exception\NameResolutionException
      */
     public function testFailedParse()
     {
-        new Parser(new StreamSocketProvider(false));
+        $parser = new Parser(new StreamSocketProvider('non.existing.domain'));
+        $parser->parse();
     }
 
 
@@ -28,6 +29,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function testSuccessfulParse()
     {
         $parser = new Parser(new StreamSocketProvider('www.google.com'));
+        $parser->parse();
 
         $this->assertInstanceOf(ParsedCertificate::class, $parser->getParsedCertificate());
     }

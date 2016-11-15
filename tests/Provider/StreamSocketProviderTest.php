@@ -12,33 +12,6 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\InvalidUrlException
-     */
-    public function testInvalidUrlException()
-    {
-        new StreamSocketProvider(null);
-    }
-
-
-    /**
-     * Tests that proper URLs are parsed correctly
-     *
-     * @param string $url
-     * @param string $expectedHost
-     * @param int    $expectedPort
-     *
-     * @dataProvider properUrlProvider
-     */
-    public function testProperUrlHandling($url, $expectedHost, $expectedPort)
-    {
-        $provider = new StreamSocketProvider($url);
-
-        $this->assertEquals($expectedHost, $provider->getHost());
-        $this->assertEquals($expectedPort, $provider->getPort());
-    }
-
-
-    /**
      * @param string $url
      *
      * @dataProvider properCertificateProvider
@@ -57,7 +30,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonExistingDomain()
     {
-        $provider = new StreamSocketProvider('https://example.does.not.exist');
+        $provider = new StreamSocketProvider('example.does.not.exist');
         $provider->getRawCertificate();
     }
 
@@ -67,7 +40,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoCertificateFound()
     {
-        $provider = new StreamSocketProvider('http://connectivitycheck.gstatic.com:80');
+        $provider = new StreamSocketProvider('connectivitycheck.gstatic.com', 80);
         $provider->getRawCertificate();
     }
 
@@ -77,23 +50,8 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testDomainMismatch()
     {
-        $provider = new StreamSocketProvider('https://wrong.host.badssl.com/');
+        $provider = new StreamSocketProvider('wrong.host.badssl.com');
         $provider->getRawCertificate();
-    }
-
-
-    /**
-     * @return array
-     */
-    public function properUrlProvider()
-    {
-        return [
-            ['example.com', 'example.com', 443],
-            ['example.com:4430', 'example.com', 4430],
-            ['https://example.com', 'example.com', 443],
-            ['tcp://example.com', 'example.com', 443],
-            ['ssl://example.com', 'example.com', 443],
-        ];
     }
 
 
@@ -104,17 +62,17 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             // Completely valid
-            ['https://www.google.com'],
+            ['www.google.com'],
             // Expired
-            ['https://expired.badssl.com'],
+            ['expired.badssl.com'],
             // Self-signed
-            ['https://self-signed.badssl.com/'],
+            ['self-signed.badssl.com'],
             // Untrusted root
-            ['https://untrusted-root.badssl.com/'],
+            ['untrusted-root.badssl.com'],
             // Revoked
-            ['https://revoked.badssl.com/'],
+            ['revoked.badssl.com'],
             // Incomplete chain
-            ['https://incomplete-chain.badssl.com/'],
+            ['incomplete-chain.badssl.com'],
         ];
     }
 

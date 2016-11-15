@@ -1,7 +1,6 @@
 <?php
 
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
-use Jalle19\CertificateParser\Exception\InvalidUrlException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Exception\NoCertificateFoundException;
 use Jalle19\CertificateParser\Exception\UnknownErrorException;
@@ -11,7 +10,7 @@ use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 require_once(__DIR__ . '/../vendor/autoload.php');
 
 // Create a provider. The provider is used to retrieve the raw certificate details from a URL.
-$provider = new StreamSocketProvider('https://www.google.com');
+$provider = new StreamSocketProvider('www.google.com');
 
 // Create the parser instance
 $parser = new Parser($provider);
@@ -20,8 +19,6 @@ $parser = new Parser($provider);
 // be thrown
 try {
     $parser->parse();
-} catch (InvalidUrlException $e) {
-
 } catch (NameResolutionException $e) {
 
 } catch (NoCertificateFoundException $e) {
