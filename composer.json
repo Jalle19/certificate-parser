@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": ">=7.0",
+        "ext-openssl": "*",
         "acmephp/ssl": "1.0.*@beta"
     },
     "require-dev": {
