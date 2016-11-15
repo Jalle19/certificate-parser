@@ -4,7 +4,7 @@ namespace Jalle19\CertificateParser\Provider;
 
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
-use Jalle19\CertificateParser\Exception\NoCertificateFoundException;
+use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
 use Jalle19\CertificateParser\Exception\UnknownErrorException;
 
 /**
@@ -83,7 +83,7 @@ class StreamSocketProvider implements ProviderInterface
 
             // Check for unknown SSL protocol (usually means no SSL is configured on the endpoint)
             if (strpos($errorMessage, 'GET_SERVER_HELLO:unknown protocol') !== false) {
-                throw new NoCertificateFoundException();
+                throw new CertificateNotFoundException();
             }
 
             // Check for domain mismatches

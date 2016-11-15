@@ -36,7 +36,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\NoCertificateFoundException
+     * @expectedException \Jalle19\CertificateParser\Exception\CertificateNotFoundException
      */
     public function testNoCertificateFound()
     {

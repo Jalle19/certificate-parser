@@ -2,7 +2,7 @@
 
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
-use Jalle19\CertificateParser\Exception\NoCertificateFoundException;
+use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
 use Jalle19\CertificateParser\Exception\UnknownErrorException;
 use Jalle19\CertificateParser\Parser;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
@@ -21,7 +21,7 @@ try {
     $parser->parse();
 } catch (NameResolutionException $e) {
 
-} catch (NoCertificateFoundException $e) {
+} catch (CertificateNotFoundException $e) {
 
 } catch (DomainMismatchException $e) {
 
