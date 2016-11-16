@@ -3,6 +3,7 @@
 namespace Jalle19\CertificateParser;
 
 use AcmePhp\Ssl\Certificate;
+use AcmePhp\Ssl\Exception\CertificateParsingException;
 use AcmePhp\Ssl\ParsedCertificate;
 use AcmePhp\Ssl\Parser\CertificateParser;
 use Jalle19\CertificateParser\Provider\ProviderInterface;
@@ -24,6 +25,11 @@ class Parser
      */
     private $rawCertificate;
 
+    /**
+     * @var ParsedCertificate
+     */
+    private $parsedCertificate;
+
 
     /**
      * Parser constructor.
@@ -38,10 +44,18 @@ class Parser
 
     /**
      * Attempts to parse the certificate
+     *
+     * @throws CertificateParsingException
      */
     public function parse()
     {
         $this->rawCertificate = $this->provider->getRawCertificate();
+
+        openssl_x509_export($this->rawCertificate, $pemString);
+        $parser         = new CertificateParser();
+        $rawCertificate = new Certificate($pemString);
+
+        $this->parsedCertificate = $parser->parse($rawCertificate);
     }
 
 
@@ -50,11 +64,7 @@ class Parser
      */
     public function getParsedCertificate()
     {
-        openssl_x509_export($this->rawCertificate, $pemString);
-        $parser         = new CertificateParser();
-        $rawCertificate = new Certificate($pemString);
-
-        return $parser->parse($rawCertificate);
+        return $this->parsedCertificate;
     }
 
 

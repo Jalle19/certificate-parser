@@ -32,6 +32,9 @@ try {
 } catch (ConnectionFailedException $e) {
     // Catch-all exception for connection errors that haven't been specifically handled
     var_dump($e->getMessage());
+} catch (CertificateParsingException $e) {
+    // The certificate was successfully retrieved but couldn't be parsed
+    var_dump($e->getMessage());
 }
 
 // Now we can inspect the certificate
