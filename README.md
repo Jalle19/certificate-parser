@@ -51,16 +51,16 @@ use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-// Create a provider. The provider is used to retrieve the raw certificate details from a URL. If you don't want
-// DomainMismatchException to be thrown if the peer name doesn't match, pass false as the last parameter to the 
-// constructor.
+// Create a provider. The provider is used to retrieve the raw certificate details from a URL.
+// If you don't want DomainMismatchException to be thrown if the peer name doesn't match, pass
+// false as the last parameter to the constructor.
 $provider = new StreamSocketProvider('www.google.com');
 
 // Create the parser instance
 $parser = new Parser($provider);
 
-// Parse the certificate and print some details about it. Handle all exception types separately to illustrate what can 
-// be thrown
+// Parse the certificate and print some details about it. Handle all exception types separately
+// to illustrate what can be thrown
 try {
     $parser->parse();
 } catch (NameResolutionException $e) {
@@ -75,7 +75,8 @@ try {
     // Catch-all exception for connection errors that haven't been specifically handled
     var_dump($e->getMessage());
 } catch (BaseException $e) {
-    // All of the above exceptions inherit from this one, so if you don't what happened you can just catch this
+    // All of the above exceptions inherit from this one, so if you don't what happened you
+    // can just catch this
 } catch (CertificateParsingException $e) {
     // The certificate was successfully retrieved but couldn't be parsed
     var_dump($e->getMessage());
