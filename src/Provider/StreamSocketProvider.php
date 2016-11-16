@@ -65,14 +65,6 @@ class StreamSocketProvider implements ProviderInterface
      */
     public function getRawCertificate()
     {
-        $streamContext = stream_context_create([
-            'ssl' => [
-                'capture_peer_cert' => true,
-                'verify_peer'       => false,
-                'verify_peer_name'  => $this->verifyPeerName,
-            ],
-        ]);
-
         try {
             $client = stream_socket_client(
                 $this->getRequestUrl(),
@@ -80,37 +72,33 @@ class StreamSocketProvider implements ProviderInterface
                 $errorDescription,
                 $this->timeout,
                 STREAM_CLIENT_CONNECT,
-                $streamContext
+                $this->getStreamContext()
             );
 
             $response = stream_context_get_params($client);
 
             return $response['options']['ssl']['peer_certificate'];
         } catch (\Throwable $e) {
-            $errorMessage = $e->getMessage();
+            // Parse the error messages and throw appropriate exceptions if possible
+            $this->handleThrowable($e);
 
-            // Check for name resolution errors
-            if (strpos($errorMessage, 'getaddrinfo failed') !== false) {
-                throw new NameResolutionException();
-            }
-
-            // Check for unknown SSL protocol (usually means no SSL is configured on the endpoint)
-            if (strpos($errorMessage, 'GET_SERVER_HELLO:unknown protocol') !== false) {
-                throw new CertificateNotFoundException();
-            }
-
-            // Check for domain mismatches
-            if (strpos($errorMessage, 'did not match expected') !== false) {
-                throw new DomainMismatchException();
-            }
-
-            // Check for connection timeouts
-            if (strpos($errorMessage, 'timed out') !== false) {
-                throw new ConnectionTimeoutException();
-            }
-
-            throw new ConnectionFailedException($errorMessage);
+            throw new ConnectionFailedException($e->getMessage());
         }
+    }
+
+
+    /**
+     * @return resource
+     */
+    private function getStreamContext()
+    {
+        return stream_context_create([
+            'ssl' => [
+                'capture_peer_cert' => true,
+                'verify_peer'       => false,
+                'verify_peer_name'  => $this->verifyPeerName,
+            ],
+        ]);
     }
 
 
@@ -120,6 +108,40 @@ class StreamSocketProvider implements ProviderInterface
     private function getRequestUrl()
     {
         return 'ssl://' . $this->hostname . ':' . $this->port;
+    }
+
+
+    /**
+     * @param \Throwable $e
+     *
+     * @throws CertificateNotFoundException
+     * @throws ConnectionTimeoutException
+     * @throws DomainMismatchException
+     * @throws NameResolutionException
+     */
+    private function handleThrowable(\Throwable $e)
+    {
+        $errorMessage = $e->getMessage();
+
+        // Check for name resolution errors
+        if (strpos($errorMessage, 'getaddrinfo failed') !== false) {
+            throw new NameResolutionException();
+        }
+
+        // Check for unknown SSL protocol (usually means no SSL is configured on the endpoint)
+        if (strpos($errorMessage, 'GET_SERVER_HELLO:unknown protocol') !== false) {
+            throw new CertificateNotFoundException();
+        }
+
+        // Check for domain mismatches
+        if (strpos($errorMessage, 'did not match expected') !== false) {
+            throw new DomainMismatchException();
+        }
+
+        // Check for connection timeouts
+        if (strpos($errorMessage, 'timed out') !== false) {
+            throw new ConnectionTimeoutException();
+        }
     }
 
 }
