@@ -11,7 +11,9 @@ use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-// Create a provider. The provider is used to retrieve the raw certificate details from a URL.
+// Create a provider. The provider is used to retrieve the raw certificate details from a URL. If you don't want
+// DomainMismatchException to be thrown if the peer name doesn't match, pass false as the last parameter to the 
+// constructor.
 $provider = new StreamSocketProvider('www.google.com');
 
 // Create the parser instance

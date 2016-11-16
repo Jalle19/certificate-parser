@@ -19,11 +19,6 @@ class StreamSocketProvider implements ProviderInterface
     const DEFAULT_PORT            = 443;
 
     /**
-     * @var int
-     */
-    private $timeout;
-
-    /**
      * @var string
      */
     private $hostname;
@@ -33,19 +28,35 @@ class StreamSocketProvider implements ProviderInterface
      */
     private $port;
 
+    /**
+     * @var int
+     */
+    private $timeout;
+
+    /**
+     * @var boolean
+     */
+    private $verifyPeerName;
+
 
     /**
      * StreamSocketProvider constructor.
      *
-     * @param string $hostname
-     * @param int    $port    (optional)
-     * @param int    $timeout (optional)
+     * @param string  $hostname
+     * @param int     $port           (optional)
+     * @param int     $timeout        (optional)
+     * @param boolean $verifyPeerName (optional)
      */
-    public function __construct($hostname, $port = self::DEFAULT_PORT, $timeout = self::DEFAULT_TIMEOUT_SECONDS)
-    {
-        $this->hostname = $hostname;
-        $this->port     = $port;
-        $this->timeout  = $timeout;
+    public function __construct(
+        $hostname,
+        $port = self::DEFAULT_PORT,
+        $timeout = self::DEFAULT_TIMEOUT_SECONDS,
+        $verifyPeerName = true
+    ) {
+        $this->hostname       = $hostname;
+        $this->port           = $port;
+        $this->timeout        = $timeout;
+        $this->verifyPeerName = $verifyPeerName;
     }
 
 
@@ -58,6 +69,7 @@ class StreamSocketProvider implements ProviderInterface
             'ssl' => [
                 'capture_peer_cert' => true,
                 'verify_peer'       => false,
+                'verify_peer_name'  => $this->verifyPeerName,
             ],
         ]);
 

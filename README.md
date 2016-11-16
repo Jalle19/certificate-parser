@@ -19,7 +19,8 @@ self-signed certificate).
 This means you can parse e.g. local PEM files too, not just certificates from remote URLs, as long as you write a 
 provider for it.
 * Fault-tolerant. Just because PHP's default settings trigger an error when parsing a certificate doesn't mean you 
-don't want to parse it.
+don't want to parse it. This library can handle both self-signed certificates and certificates where the domain name 
+doesn't match.
 * Granular error handling. There are multiple exception types for various failure scenarios, so you can choose 
 exactly how you want each type of error to be handled.
 
@@ -49,7 +50,9 @@ use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-// Create a provider. The provider is used to retrieve the raw certificate details from a URL.
+// Create a provider. The provider is used to retrieve the raw certificate details from a URL. If you don't want
+// DomainMismatchException to be thrown if the peer name doesn't match, pass false as the last parameter to the 
+// constructor.
 $provider = new StreamSocketProvider('www.google.com');
 
 // Create the parser instance

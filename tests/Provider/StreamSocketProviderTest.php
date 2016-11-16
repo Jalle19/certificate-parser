@@ -18,10 +18,8 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testProperCertificateHandling($url)
     {
-        $provider       = new StreamSocketProvider($url);
-        $rawCertificate = $provider->getRawCertificate();
-
-        $this->assertTrue(is_resource($rawCertificate));
+        $provider = new StreamSocketProvider($url);
+        $this->assertTrue(is_resource($provider->getRawCertificate()));
     }
 
 
@@ -52,6 +50,18 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
     {
         $provider = new StreamSocketProvider('wrong.host.badssl.com');
         $provider->getRawCertificate();
+    }
+
+
+    /**
+     *
+     */
+    public function testVerifyPeerName()
+    {
+        $provider = new StreamSocketProvider('wrong.host.badssl.com', StreamSocketProvider::DEFAULT_PORT,
+            StreamSocketProvider::DEFAULT_TIMEOUT_SECONDS, false);
+
+        $this->assertTrue(is_resource($provider->getRawCertificate()));
     }
 
 
