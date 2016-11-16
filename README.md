@@ -38,6 +38,7 @@ composer require jalle19/certificate-parser
 ```php
 <?php
 
+use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
@@ -63,9 +64,10 @@ try {
 
 } catch (DomainMismatchException $e) {
 
+} catch (ConnectionTimeoutException $e) {
+
 } catch (UnknownErrorException $e) {
-    // Catch-all exception for errors that haven't been specifically handled. An example of these are various 
-    // connection-related errors, e.g. a timeout.
+    // Catch-all exception for errors that haven't been specifically handled
     var_dump($e->getMessage());
 }
 

@@ -56,9 +56,9 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\UnknownErrorException
+     * @expectedException \Jalle19\CertificateParser\Exception\ConnectionTimeoutException
      */
-    public function testUnknownException()
+    public function testConnectionTimeoutException()
     {
         // Force a timeout to occur
         $provider = new StreamSocketProvider('example.com', 443, 0);

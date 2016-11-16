@@ -2,6 +2,7 @@
 
 namespace Jalle19\CertificateParser\Provider;
 
+use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
@@ -89,6 +90,11 @@ class StreamSocketProvider implements ProviderInterface
             // Check for domain mismatches
             if (strpos($errorMessage, 'did not match expected') !== false) {
                 throw new DomainMismatchException();
+            }
+
+            // Check for connection timeouts
+            if (strpos($errorMessage, 'timed out') !== false) {
+                throw new ConnectionTimeoutException();
             }
 
             throw new UnknownErrorException($errorMessage);
