@@ -1,6 +1,8 @@
 {
     "name": "jalle19/certificate-parser",
     "description": "A proper SSL/TLS certificate parser library for PHP",
+    "keywords": ["certificate", "parser", "tls", "ssl"],
+    "homepage": "https://github.com/Jalle19/certificate-parser",
     "type": "library",
     "license": "MIT",
     "authors": [
