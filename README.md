@@ -38,11 +38,12 @@ composer require jalle19/certificate-parser
 ```php
 <?php
 
+use AcmePhp\Ssl\Exception\CertificateParsingException;
 use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
-use Jalle19\CertificateParser\Exception\UnknownErrorException;
+use Jalle19\CertificateParser\Exception\ConnectionFailedException;
 use Jalle19\CertificateParser\Parser;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 
@@ -66,8 +67,8 @@ try {
 
 } catch (ConnectionTimeoutException $e) {
 
-} catch (UnknownErrorException $e) {
-    // Catch-all exception for errors that haven't been specifically handled
+} catch (ConnectionFailedException $e) {
+    // Catch-all exception for connection errors that haven't been specifically handled
     var_dump($e->getMessage());
 }
 

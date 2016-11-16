@@ -6,7 +6,7 @@ use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
-use Jalle19\CertificateParser\Exception\UnknownErrorException;
+use Jalle19\CertificateParser\Exception\ConnectionFailedException;
 
 /**
  * Class StreamSocketProvider
@@ -97,7 +97,7 @@ class StreamSocketProvider implements ProviderInterface
                 throw new ConnectionTimeoutException();
             }
 
-            throw new UnknownErrorException($errorMessage);
+            throw new ConnectionFailedException($errorMessage);
         }
     }
 
