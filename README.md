@@ -40,6 +40,7 @@ composer require jalle19/certificate-parser
 <?php
 
 use AcmePhp\Ssl\Exception\CertificateParsingException;
+use Jalle19\CertificateParser\Exception\BaseException;
 use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
@@ -73,6 +74,8 @@ try {
 } catch (ConnectionFailedException $e) {
     // Catch-all exception for connection errors that haven't been specifically handled
     var_dump($e->getMessage());
+} catch (BaseException $e) {
+    // All of the above exceptions inherit from this one, so if you don't what happened you can just catch this
 } catch (CertificateParsingException $e) {
     // The certificate was successfully retrieved but couldn't be parsed
     var_dump($e->getMessage());
