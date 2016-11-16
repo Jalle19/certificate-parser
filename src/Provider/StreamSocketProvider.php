@@ -98,11 +98,11 @@ class StreamSocketProvider implements ProviderInterface
             // Throw mapped exceptions
             foreach (self::$errorExceptionMap as $needle => $exceptionClass) {
                 if (strpos($errorMessage, $needle) !== false) {
-                    throw new $exceptionClass();
+                    throw new $exceptionClass($errorMessage);
                 }
             }
 
-            throw new ConnectionFailedException($e->getMessage());
+            throw new ConnectionFailedException($errorMessage);
         }
     }
 
