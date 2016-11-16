@@ -38,6 +38,20 @@ class StreamSocketProvider implements ProviderInterface
      */
     private $verifyPeerName;
 
+    /**
+     * @var array maps partial error messages to exception types
+     */
+    private static $errorExceptionMap = [
+        // Check for name resolution errors
+        'getaddrinfo failed'                => NameResolutionException::class,
+        // Check for unknown SSL protocol (usually means no SSL is configured on the endpoint)
+        'GET_SERVER_HELLO:unknown protocol' => CertificateNotFoundException::class,
+        // Check for domain mismatches
+        'did not match expected'            => DomainMismatchException::class,
+        // Check for connection timeouts
+        'timed out'                         => ConnectionTimeoutException::class,
+    ];
+
 
     /**
      * StreamSocketProvider constructor.
@@ -79,8 +93,14 @@ class StreamSocketProvider implements ProviderInterface
 
             return $response['options']['ssl']['peer_certificate'];
         } catch (\Throwable $e) {
-            // Parse the error messages and throw appropriate exceptions if possible
-            $this->handleThrowable($e);
+            $errorMessage = $e->getMessage();
+
+            // Throw mapped exceptions
+            foreach (self::$errorExceptionMap as $needle => $exceptionClass) {
+                if (strpos($errorMessage, $needle) !== false) {
+                    throw new $exceptionClass();
+                }
+            }
 
             throw new ConnectionFailedException($e->getMessage());
         }
@@ -108,40 +128,6 @@ class StreamSocketProvider implements ProviderInterface
     private function getRequestUrl()
     {
         return 'ssl://' . $this->hostname . ':' . $this->port;
-    }
-
-
-    /**
-     * @param \Throwable $e
-     *
-     * @throws CertificateNotFoundException
-     * @throws ConnectionTimeoutException
-     * @throws DomainMismatchException
-     * @throws NameResolutionException
-     */
-    private function handleThrowable(\Throwable $e)
-    {
-        $errorMessage = $e->getMessage();
-
-        // Check for name resolution errors
-        if (strpos($errorMessage, 'getaddrinfo failed') !== false) {
-            throw new NameResolutionException();
-        }
-
-        // Check for unknown SSL protocol (usually means no SSL is configured on the endpoint)
-        if (strpos($errorMessage, 'GET_SERVER_HELLO:unknown protocol') !== false) {
-            throw new CertificateNotFoundException();
-        }
-
-        // Check for domain mismatches
-        if (strpos($errorMessage, 'did not match expected') !== false) {
-            throw new DomainMismatchException();
-        }
-
-        // Check for connection timeouts
-        if (strpos($errorMessage, 'timed out') !== false) {
-            throw new ConnectionTimeoutException();
-        }
     }
 
 }
