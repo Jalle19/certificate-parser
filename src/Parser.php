@@ -20,6 +20,7 @@ class Parser
      * @param ProviderInterface $provider
      *
      * @throws CertificateParsingException
+     * @throws ProviderException
      *
      * @return ParserResults
      */
