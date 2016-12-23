@@ -14,6 +14,8 @@ use Jalle19\CertificateParser\Provider\LocalFileProvider;
 class ParserResultsTest extends \PHPUnit_Framework_TestCase
 {
 
+    const SNAKE_OIL_CERTIFICATE_PATH = __DIR__ . '/../resources/ssl-cert-snakeoil.pem';
+
     /**
      * @var ParserResults
      */
@@ -28,7 +30,7 @@ class ParserResultsTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $parser   = new Parser();
-        $provider = new LocalFileProvider(__DIR__ . '/../resources/ssl-cert-snakeoil.pem');
+        $provider = new LocalFileProvider(self::SNAKE_OIL_CERTIFICATE_PATH);
 
         $this->parserResults = $parser->parse($provider);
     }
@@ -58,6 +60,15 @@ class ParserResultsTest extends \PHPUnit_Framework_TestCase
     public function testGetFingerprint()
     {
         $this->assertEquals('026e630d487a3921380f9d1e77c7163a62aa3f67', $this->parserResults->getFingerprint());
+    }
+
+
+    /**
+     * Tests that getPemString() works correctly
+     */
+    public function testGetPemString()
+    {
+        $this->assertContains('BEGIN CERTIFICATE', $this->parserResults->getPemString());
     }
 
 }

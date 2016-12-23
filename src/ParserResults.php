@@ -22,6 +22,11 @@ class ParserResults
     private $rawCertificate;
 
     /**
+     * @var string
+     */
+    private $pemString;
+
+    /**
      * @var string the certificate fingerprint
      */
     private $fingerprint;
@@ -32,12 +37,18 @@ class ParserResults
      *
      * @param ParsedCertificate $parsedCertificate
      * @param array             $rawCertificate
+     * @param string            $pemString
      * @param string            $fingerprint
      */
-    public function __construct(ParsedCertificate $parsedCertificate, array $rawCertificate, $fingerprint)
-    {
+    public function __construct(
+        ParsedCertificate $parsedCertificate,
+        array $rawCertificate,
+        $pemString,
+        $fingerprint
+    ) {
         $this->parsedCertificate = $parsedCertificate;
         $this->rawCertificate    = $rawCertificate;
+        $this->pemString         = $pemString;
         $this->fingerprint       = $fingerprint;
     }
 
@@ -60,6 +71,15 @@ class ParserResults
     }
 
 
+    /**
+     * @return string
+     */
+    public function getPemString()
+    {
+        return $this->pemString;
+    }
+
+    
     /**
      * @return string
      */

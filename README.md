@@ -78,6 +78,9 @@ try {
     // We can also get the certificate fingerprint
     $fingerprint = $parserResults->getFingerprint();
 
+    // We can also get the certificate in PEM format (as a string)
+    $pemString = $parserResults->getPemString();
+
     // Let's parse a certificate from a local file instead
     $parserResults = $parser->parse(new LocalFileProvider(__DIR__ . '/../resources/ssl-cert-snakeoil.pem'));
     $certificate   = $parserResults->getParsedCertificate();
