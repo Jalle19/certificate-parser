@@ -46,7 +46,6 @@ use Jalle19\CertificateParser\Provider\Exception\ConnectionTimeoutException;
 use Jalle19\CertificateParser\Provider\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Provider\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Provider\Exception\CertificateNotFoundException;
-use Jalle19\CertificateParser\Provider\Exception\ConnectionFailedException;
 use Jalle19\CertificateParser\Parser;
 use Jalle19\CertificateParser\Provider\LocalFileProvider;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
@@ -90,18 +89,17 @@ try {
 
 } catch (ConnectionTimeoutException $e) {
 
-} catch (ConnectionFailedException $e) {
-    // Catch-all exception for connection errors that haven't been specifically handled
-    var_dump($e->getMessage());
 } catch (FileNotFoundException $e) {
     // Thrown by LocalFileProvider if the specified PEM file doesn't exist
 } catch (ProviderException $e) {
     // All of the above exceptions inherit from this one, so if you don't what happened you
     // can just catch this
+    var_dump($e->getMessage());
 } catch (CertificateParsingException $e) {
     // The certificate was successfully retrieved but couldn't be parsed
     var_dump($e->getMessage());
 }
+
 ```
 
 You can also find this example in the `examples/` directory. If you run it using `php examples/example.php` it should 
