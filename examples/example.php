@@ -18,12 +18,23 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 $provider = new StreamSocketProvider('www.google.com');
 
 // Create the parser instance
-$parser = new Parser($provider);
+$parser = new Parser();
 
 // Parse the certificate and print some details about it. Handle all exception types separately
 // to illustrate what can be thrown
 try {
-    $parser->parse();
+    $parserResult = $parser->parse($provider);
+
+    // Now we can inspect the certificate
+    $certificate = $parserResult->getParsedCertificate();
+
+    echo 'Issuer:                  ' . $certificate->getIssuer() . PHP_EOL;
+    echo 'Subject:                 ' . $certificate->getSubject() . PHP_EOL;
+    echo 'Subject alternate names: ' . implode(', ', $certificate->getSubjectAlternativeNames()) . PHP_EOL;
+    echo 'Valid until:             ' . $certificate->getValidTo()->format('r') . PHP_EOL;
+
+    // We can also inspect the raw certificate directly
+    $rawCertificate = $parserResult->getRawCertificate();
 } catch (NameResolutionException $e) {
 
 } catch (CertificateNotFoundException $e) {
@@ -42,14 +53,3 @@ try {
     // The certificate was successfully retrieved but couldn't be parsed
     var_dump($e->getMessage());
 }
-
-// Now we can inspect the certificate
-$certificate = $parser->getParsedCertificate();
-
-echo 'Issuer:                  ' . $certificate->getIssuer() . PHP_EOL;
-echo 'Subject:                 ' . $certificate->getSubject() . PHP_EOL;
-echo 'Subject alternate names: ' . implode(', ', $certificate->getSubjectAlternativeNames()) . PHP_EOL;
-echo 'Valid until:             ' . $certificate->getValidTo()->format('r') . PHP_EOL;
-
-// We can also inspect the raw certificate directly
-$rawCertificate = $parser->getRawCertificate();

@@ -18,8 +18,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testFailedParse()
     {
-        $parser = new Parser(new StreamSocketProvider('non.existing.domain'));
-        $parser->parse();
+        $parser = new Parser();
+        $parser->parse(new StreamSocketProvider('non.existing.domain'));
     }
 
 
@@ -28,10 +28,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParsedCertificate()
     {
-        $parser = new Parser(new StreamSocketProvider('www.google.com'));
-        $parser->parse();
+        $parser        = new Parser();
+        $parserResults = $parser->parse(new StreamSocketProvider('www.google.com'));
 
-        $this->assertInstanceOf(ParsedCertificate::class, $parser->getParsedCertificate());
+        $this->assertInstanceOf(ParsedCertificate::class, $parserResults->getParsedCertificate());
     }
 
 
@@ -40,9 +40,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRawCertificate()
     {
-        $parser = new Parser(new StreamSocketProvider('www.google.com'));
-        $parser->parse();
-        $rawCertificate = $parser->getRawCertificate();
+        $parser         = new Parser();
+        $parserResults  = $parser->parse(new StreamSocketProvider('www.google.com'));
+        $rawCertificate = $parserResults->getRawCertificate();
 
         $this->assertArrayHasKey('name', $rawCertificate);
         $this->assertArrayHasKey('subject', $rawCertificate);

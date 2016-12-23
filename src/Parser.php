@@ -4,7 +4,6 @@ namespace Jalle19\CertificateParser;
 
 use AcmePhp\Ssl\Certificate;
 use AcmePhp\Ssl\Exception\CertificateParsingException;
-use AcmePhp\Ssl\ParsedCertificate;
 use AcmePhp\Ssl\Parser\CertificateParser;
 use Jalle19\CertificateParser\Provider\ProviderInterface;
 
@@ -16,64 +15,24 @@ class Parser
 {
 
     /**
-     * @var ProviderInterface
-     */
-    private $provider;
-
-    /**
-     * @var array
-     */
-    private $rawCertificate;
-
-    /**
-     * @var ParsedCertificate
-     */
-    private $parsedCertificate;
-
-
-    /**
-     * Parser constructor.
+     * Attempts to parse the certificate using the specified provider
      *
      * @param ProviderInterface $provider
-     */
-    public function __construct(ProviderInterface $provider)
-    {
-        $this->provider = $provider;
-    }
-
-
-    /**
-     * Attempts to parse the certificate
      *
      * @throws CertificateParsingException
+     *
+     * @return ParserResults
      */
-    public function parse()
+    public function parse(ProviderInterface $provider)
     {
-        $this->rawCertificate = $this->provider->getRawCertificate();
+        $rawCertificate = $provider->getRawCertificate();
 
-        openssl_x509_export($this->rawCertificate, $pemString);
-        $parser         = new CertificateParser();
-        $rawCertificate = new Certificate($pemString);
+        // Convert the raw certificate to a PEM string and parse it
+        openssl_x509_export($rawCertificate, $pemString);
+        $parser            = new CertificateParser();
+        $parsedCertificate = $parser->parse(new Certificate($pemString));
 
-        $this->parsedCertificate = $parser->parse($rawCertificate);
-    }
-
-
-    /**
-     * @return ParsedCertificate
-     */
-    public function getParsedCertificate()
-    {
-        return $this->parsedCertificate;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getRawCertificate()
-    {
-        return openssl_x509_parse($this->rawCertificate);
+        return new ParserResults($parsedCertificate, openssl_x509_parse($rawCertificate));
     }
 
 }
