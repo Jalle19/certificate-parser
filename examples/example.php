@@ -1,7 +1,7 @@
 <?php
 
 use AcmePhp\Ssl\Exception\CertificateParsingException;
-use Jalle19\CertificateParser\Exception\BaseException;
+use Jalle19\CertificateParser\Exception\ProviderException;
 use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
 use Jalle19\CertificateParser\Exception\DomainMismatchException;
 use Jalle19\CertificateParser\Exception\NameResolutionException;
@@ -46,7 +46,7 @@ try {
 } catch (ConnectionFailedException $e) {
     // Catch-all exception for connection errors that haven't been specifically handled
     var_dump($e->getMessage());
-} catch (BaseException $e) {
+} catch (ProviderException $e) {
     // All of the above exceptions inherit from this one, so if you don't what happened you
     // can just catch this
 } catch (CertificateParsingException $e) {

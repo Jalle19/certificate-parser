@@ -3,10 +3,10 @@
 namespace Jalle19\CertificateParser\Exception;
 
 /**
- * Class BaseException
+ * Class ProviderException
  * @package Jalle19\CertificateParser\Exception
  */
-class BaseException extends \Exception
+class ProviderException extends \Exception
 {
 
 }
