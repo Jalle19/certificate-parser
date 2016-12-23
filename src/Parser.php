@@ -32,7 +32,8 @@ class Parser
         $parser            = new CertificateParser();
         $parsedCertificate = $parser->parse(new Certificate($pemString));
 
-        return new ParserResults($parsedCertificate, openssl_x509_parse($rawCertificate));
+        return new ParserResults($parsedCertificate, openssl_x509_parse($rawCertificate),
+            openssl_x509_fingerprint($pemString));
     }
 
 }

@@ -37,6 +37,9 @@ try {
     // We can also inspect the raw certificate directly
     $rawCertificate = $parserResults->getRawCertificate();
 
+    // We can also get the certificate fingerprint
+    $fingerprint = $parserResults->getFingerprint();
+
     // Let's parse a certificate from a local file instead
     $parserResults = $parser->parse(new LocalFileProvider(__DIR__ . '/../resources/ssl-cert-snakeoil.pem'));
     $certificate   = $parserResults->getParsedCertificate();

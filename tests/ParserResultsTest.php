@@ -51,4 +51,13 @@ class ParserResultsTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $this->parserResults->getRawCertificate()['extensions']);
     }
 
+
+    /**
+     * Tests that getFingerprint() works correctly
+     */
+    public function testGetFingerprint()
+    {
+        $this->assertEquals('026e630d487a3921380f9d1e77c7163a62aa3f67', $this->parserResults->getFingerprint());
+    }
+
 }

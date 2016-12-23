@@ -21,17 +21,24 @@ class ParserResults
      */
     private $rawCertificate;
 
+    /**
+     * @var string the certificate fingerprint
+     */
+    private $fingerprint;
+
 
     /**
      * ParserResult constructor.
      *
      * @param ParsedCertificate $parsedCertificate
      * @param array             $rawCertificate
+     * @param string            $fingerprint
      */
-    public function __construct(ParsedCertificate $parsedCertificate, array $rawCertificate)
+    public function __construct(ParsedCertificate $parsedCertificate, array $rawCertificate, $fingerprint)
     {
         $this->parsedCertificate = $parsedCertificate;
         $this->rawCertificate    = $rawCertificate;
+        $this->fingerprint       = $fingerprint;
     }
 
 
@@ -50,6 +57,15 @@ class ParserResults
     public function getRawCertificate()
     {
         return $this->rawCertificate;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getFingerprint()
+    {
+        return $this->fingerprint;
     }
 
 }
