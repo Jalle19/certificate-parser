@@ -14,7 +14,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\NameResolutionException
+     * @expectedException \Jalle19\CertificateParser\Provider\Exception\NameResolutionException
      */
     public function testFailedParse()
     {

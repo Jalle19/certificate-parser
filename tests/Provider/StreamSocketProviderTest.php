@@ -24,7 +24,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\NameResolutionException
+     * @expectedException \Jalle19\CertificateParser\Provider\Exception\NameResolutionException
      */
     public function testNonExistingDomain()
     {
@@ -34,7 +34,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\CertificateNotFoundException
+     * @expectedException \Jalle19\CertificateParser\Provider\Exception\CertificateNotFoundException
      */
     public function testNoCertificateFound()
     {
@@ -44,7 +44,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\DomainMismatchException
+     * @expectedException \Jalle19\CertificateParser\Provider\Exception\DomainMismatchException
      */
     public function testDomainMismatch()
     {
@@ -66,7 +66,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException \Jalle19\CertificateParser\Exception\ConnectionTimeoutException
+     * @expectedException \Jalle19\CertificateParser\Provider\Exception\ConnectionTimeoutException
      */
     public function testConnectionTimeoutException()
     {

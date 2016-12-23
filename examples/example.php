@@ -1,12 +1,12 @@
 <?php
 
 use AcmePhp\Ssl\Exception\CertificateParsingException;
-use Jalle19\CertificateParser\Exception\ProviderException;
-use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
-use Jalle19\CertificateParser\Exception\DomainMismatchException;
-use Jalle19\CertificateParser\Exception\NameResolutionException;
-use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
-use Jalle19\CertificateParser\Exception\ConnectionFailedException;
+use Jalle19\CertificateParser\Provider\Exception\ProviderException;
+use Jalle19\CertificateParser\Provider\Exception\ConnectionTimeoutException;
+use Jalle19\CertificateParser\Provider\Exception\DomainMismatchException;
+use Jalle19\CertificateParser\Provider\Exception\NameResolutionException;
+use Jalle19\CertificateParser\Provider\Exception\CertificateNotFoundException;
+use Jalle19\CertificateParser\Provider\Exception\ConnectionFailedException;
 use Jalle19\CertificateParser\Parser;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 

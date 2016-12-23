@@ -1,10 +1,10 @@
 <?php
 
-namespace Jalle19\CertificateParser\Exception;
+namespace Jalle19\CertificateParser\Provider\Exception;
 
 /**
  * Class NoCertificateFoundException
- * @package Jalle19\CertificateParser\Exception
+ * @package Jalle19\CertificateParser\Provider\Exception
  */
 class CertificateNotFoundException extends ProviderException
 {

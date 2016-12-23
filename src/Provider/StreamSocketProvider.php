@@ -2,11 +2,11 @@
 
 namespace Jalle19\CertificateParser\Provider;
 
-use Jalle19\CertificateParser\Exception\ConnectionTimeoutException;
-use Jalle19\CertificateParser\Exception\DomainMismatchException;
-use Jalle19\CertificateParser\Exception\NameResolutionException;
-use Jalle19\CertificateParser\Exception\CertificateNotFoundException;
-use Jalle19\CertificateParser\Exception\ConnectionFailedException;
+use Jalle19\CertificateParser\Provider\Exception\ConnectionTimeoutException;
+use Jalle19\CertificateParser\Provider\Exception\DomainMismatchException;
+use Jalle19\CertificateParser\Provider\Exception\NameResolutionException;
+use Jalle19\CertificateParser\Provider\Exception\CertificateNotFoundException;
+use Jalle19\CertificateParser\Provider\Exception\ConnectionFailedException;
 
 /**
  * Class StreamSocketProvider
