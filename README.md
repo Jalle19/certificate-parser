@@ -16,8 +16,7 @@ self-signed certificate).
 ## Features
 
 * Completely configurable. This library uses *providers* to fetch the underlying X.509 certificate before parsing them. 
-This means you can parse e.g. local PEM files too, not just certificates from remote URLs, as long as you write a 
-provider for it.
+This means you can parse e.g. local PEM files too, not just certificates from remote URLs.
 * Fault-tolerant. Just because PHP's default settings trigger an error when parsing a certificate doesn't mean you 
 don't want to parse it. This library can handle both self-signed certificates and certificates where the domain name 
 doesn't match.
@@ -114,8 +113,12 @@ Valid until:             Thu, 26 Jan 2017 01:13:00 +0000
 
 ### Writing a custom provider
 
-This library ships with only a single provider, `StreamSocketProvider`. If it doesn't suit your needs, create a new 
-provider by implementing the `ProviderInterface` interface.
+This library ships with two providers:
+
+* `StreamSocketProvider` - retrieves certificates from a remote server using `stream_socket_client`
+* `LocalFileProvider` - retrieves certificates using local files
+
+If these don't suit your needs, create a new provider by implementing the `ProviderInterface` interface.
 
 ## License
 
