@@ -10,7 +10,7 @@ interface ProviderInterface
 {
 
     /**
-     * @return array
+     * @return resource the raw X.509 certificate
      */
     public function getRawCertificate();
 
