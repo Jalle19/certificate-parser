@@ -9,6 +9,7 @@ use Jalle19\CertificateParser\Provider\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Provider\Exception\CertificateNotFoundException;
 use Jalle19\CertificateParser\Parser;
 use Jalle19\CertificateParser\Provider\LocalFileProvider;
+use Jalle19\CertificateParser\Provider\StreamContext;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
@@ -17,6 +18,10 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 // If you don't want DomainMismatchException to be thrown if the peer name doesn't match, pass
 // false as the last parameter to the constructor.
 $provider = new StreamSocketProvider('www.google.com');
+
+// You can manipulate the stream context used when fetching the certificate by passing a StreamContext object to the 
+// constructor or using the setter
+$provider->setStreamContext(new StreamContext());
 
 // Create the parser instance
 $parser = new Parser();

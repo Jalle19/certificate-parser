@@ -2,6 +2,7 @@
 
 namespace Jalle19\CertificateParser\Tests\Provider;
 
+use Jalle19\CertificateParser\Provider\StreamContext;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
 
 /**
@@ -59,7 +60,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
     public function testVerifyPeerName()
     {
         $provider = new StreamSocketProvider('wrong.host.badssl.com', StreamSocketProvider::DEFAULT_PORT,
-            StreamSocketProvider::DEFAULT_TIMEOUT_SECONDS, false);
+            StreamSocketProvider::DEFAULT_TIMEOUT_SECONDS, new StreamContext(false));
 
         $this->assertTrue(is_resource($provider->getRawCertificate()));
     }

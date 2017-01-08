@@ -34,9 +34,9 @@ class StreamSocketProvider implements ProviderInterface
     private $timeout;
 
     /**
-     * @var boolean
+     * @var StreamContext
      */
-    private $verifyPeerName;
+    private $streamContext;
 
     /**
      * @var array maps partial error messages to exception types
@@ -56,21 +56,30 @@ class StreamSocketProvider implements ProviderInterface
     /**
      * StreamSocketProvider constructor.
      *
-     * @param string  $hostname
-     * @param int     $port           (optional)
-     * @param int     $timeout        (optional)
-     * @param boolean $verifyPeerName (optional)
+     * @param string             $hostname
+     * @param int                $port          (optional)
+     * @param int                $timeout       (optional)
+     * @param StreamContext|null $streamContext (optional)
      */
     public function __construct(
         $hostname,
         $port = self::DEFAULT_PORT,
         $timeout = self::DEFAULT_TIMEOUT_SECONDS,
-        $verifyPeerName = true
+        $streamContext = null
     ) {
-        $this->hostname       = $hostname;
-        $this->port           = $port;
-        $this->timeout        = $timeout;
-        $this->verifyPeerName = $verifyPeerName;
+        $this->hostname      = $hostname;
+        $this->port          = $port;
+        $this->timeout       = $timeout;
+        $this->streamContext = $streamContext ?: new StreamContext();
+    }
+
+
+    /**
+     * @param StreamContext $streamContext
+     */
+    public function setStreamContext($streamContext)
+    {
+        $this->streamContext = $streamContext;
     }
 
 
@@ -86,7 +95,7 @@ class StreamSocketProvider implements ProviderInterface
                 $errorDescription,
                 $this->timeout,
                 STREAM_CLIENT_CONNECT,
-                $this->getStreamContext()
+                $this->streamContext->getResource()
             );
 
             $response = stream_context_get_params($client);
@@ -104,21 +113,6 @@ class StreamSocketProvider implements ProviderInterface
 
             throw new ProviderException($errorMessage);
         }
-    }
-
-
-    /**
-     * @return resource
-     */
-    private function getStreamContext()
-    {
-        return stream_context_create([
-            'ssl' => [
-                'capture_peer_cert' => true,
-                'verify_peer'       => false,
-                'verify_peer_name'  => $this->verifyPeerName,
-            ],
-        ]);
     }
 
 
