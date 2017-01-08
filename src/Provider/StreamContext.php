@@ -43,6 +43,15 @@ class StreamContext
 
 
     /**
+     * @param boolean $verifyPeerName
+     */
+    public function setVerifyPeerName($verifyPeerName)
+    {
+        $this->verifyPeerName = $verifyPeerName;
+    }
+
+
+    /**
      * @return string
      */
     public function getSniServerName()
@@ -50,6 +59,15 @@ class StreamContext
         return $this->sniServerName;
     }
 
+
+    /**
+     * @param string $sniServerName
+     */
+    public function setSniServerName($sniServerName)
+    {
+        $this->sniServerName = $sniServerName;
+    }
+    
 
     /**
      * @return array

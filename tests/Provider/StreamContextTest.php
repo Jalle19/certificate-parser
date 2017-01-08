@@ -27,6 +27,20 @@ class StreamContextTest extends \PHPUnit_Framework_TestCase
 
 
     /**
+     * Tests that the getters and setters work properly
+     */
+    public function testGettersSetters()
+    {
+        $streamContext = new StreamContext();
+        $streamContext->setVerifyPeerName(true);
+        $this->assertTrue($streamContext->verifyPeerName());
+
+        $streamContext->setSniServerName('example.com');
+        $this->assertEquals($streamContext->getSniServerName(), 'example.com');
+    }
+
+
+    /**
      * @return array
      */
     public function getArrayProvider()
