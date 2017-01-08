@@ -78,6 +78,20 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
 
 
     /**
+     * Tests that the stream context is stored and handled properly
+     */
+    public function testStreamContext()
+    {
+        $provider = new StreamSocketProvider('example.com');
+        $this->assertNotNull($provider->getStreamContext());
+
+        $streamContext = new StreamContext(false, 'example.com');
+        $provider->setStreamContext($streamContext);
+        $this->assertEquals($streamContext, $provider->getStreamContext());
+    }
+
+
+    /**
      * @return array
      */
     public function properCertificateProvider()

@@ -75,6 +75,15 @@ class StreamSocketProvider implements ProviderInterface
 
 
     /**
+     * @return StreamContext
+     */
+    public function getStreamContext()
+    {
+        return $this->streamContext;
+    }
+    
+
+    /**
      * @param StreamContext $streamContext
      */
     public function setStreamContext($streamContext)
