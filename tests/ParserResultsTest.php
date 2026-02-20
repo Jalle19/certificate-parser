@@ -6,12 +6,13 @@ use AcmePhp\Ssl\ParsedCertificate;
 use Jalle19\CertificateParser\Parser;
 use Jalle19\CertificateParser\ParserResults;
 use Jalle19\CertificateParser\Provider\LocalFileProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ParserResultsTest
  * @package Jalle19\CertificateParser\Tests
  */
-class ParserResultsTest extends \PHPUnit_Framework_TestCase
+class ParserResultsTest extends TestCase
 {
 
     const SNAKE_OIL_CERTIFICATE_PATH = __DIR__ . '/../resources/ssl-cert-snakeoil.pem';
@@ -25,7 +26,7 @@ class ParserResultsTest extends \PHPUnit_Framework_TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -68,7 +69,7 @@ class ParserResultsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPemString()
     {
-        $this->assertContains('BEGIN CERTIFICATE', $this->parserResults->getPemString());
+        $this->assertStringContainsString('BEGIN CERTIFICATE', $this->parserResults->getPemString());
     }
 
 }

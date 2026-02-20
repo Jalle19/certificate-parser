@@ -16,7 +16,7 @@ class StreamSocketProvider implements ProviderInterface
 {
 
     const DEFAULT_TIMEOUT_SECONDS = 15;
-    const DEFAULT_PORT            = 443;
+    const DEFAULT_PORT = 443;
 
     /**
      * @var string
@@ -43,22 +43,24 @@ class StreamSocketProvider implements ProviderInterface
      */
     private static $errorExceptionMap = [
         // Check for name resolution errors
-        'getaddrinfo failed'                => NameResolutionException::class,
+        'getaddrinfo' => NameResolutionException::class,
         // Check for unknown SSL protocol (usually means no SSL is configured on the endpoint)
         'GET_SERVER_HELLO:unknown protocol' => CertificateNotFoundException::class,
+        // Newer versions of OpenSSL use "wrong version number" when connecting to a non-SSL endpoint
+        'wrong version number' => CertificateNotFoundException::class,
         // Check for domain mismatches
-        'did not match expected'            => DomainMismatchException::class,
+        'did not match expected' => DomainMismatchException::class,
         // Check for connection timeouts
-        'timed out'                         => ConnectionTimeoutException::class,
+        'timed out' => ConnectionTimeoutException::class,
     ];
 
 
     /**
      * StreamSocketProvider constructor.
      *
-     * @param string             $hostname
-     * @param int                $port          (optional)
-     * @param int                $timeout       (optional)
+     * @param string $hostname
+     * @param int $port (optional)
+     * @param int $timeout (optional)
      * @param StreamContext|null $streamContext (optional)
      */
     public function __construct(
@@ -67,9 +69,9 @@ class StreamSocketProvider implements ProviderInterface
         $timeout = self::DEFAULT_TIMEOUT_SECONDS,
         $streamContext = null
     ) {
-        $this->hostname      = $hostname;
-        $this->port          = $port;
-        $this->timeout       = $timeout;
+        $this->hostname = $hostname;
+        $this->port = $port;
+        $this->timeout = $timeout;
         $this->streamContext = $streamContext ?: new StreamContext();
     }
 
@@ -81,7 +83,7 @@ class StreamSocketProvider implements ProviderInterface
     {
         return $this->streamContext;
     }
-    
+
 
     /**
      * @param StreamContext $streamContext
@@ -98,6 +100,11 @@ class StreamSocketProvider implements ProviderInterface
     public function getRawCertificate()
     {
         try {
+            // Set up an error handler so we can catch warnings from stream_socket_client()
+            set_error_handler(function (int $errno, string $errstr, string $errfile, int $errline) {
+                throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+            });
+
             $client = stream_socket_client(
                 $this->getRequestUrl(),
                 $errorNumber,
@@ -106,6 +113,10 @@ class StreamSocketProvider implements ProviderInterface
                 STREAM_CLIENT_CONNECT,
                 $this->streamContext->getResource()
             );
+
+            if ($client === false) {
+                throw new \RuntimeException($errorDescription);
+            }
 
             $response = stream_context_get_params($client);
 
@@ -121,6 +132,9 @@ class StreamSocketProvider implements ProviderInterface
             }
 
             throw new ProviderException($errorMessage);
+        } finally {
+            // Reset error handler
+            restore_error_handler();
         }
     }
 
