@@ -4,20 +4,21 @@ namespace Jalle19\CertificateParser\Tests;
 
 use AcmePhp\Ssl\ParsedCertificate;
 use Jalle19\CertificateParser\Parser;
+use Jalle19\CertificateParser\Provider\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ParserTest
  * @package Jalle19\CertificateParser\Tests
  */
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
 
-    /**
-     * @expectedException \Jalle19\CertificateParser\Provider\Exception\NameResolutionException
-     */
     public function testFailedParse()
     {
+        $this->expectException(NameResolutionException::class);
+
         $parser = new Parser();
         $parser->parse(new StreamSocketProvider('non.existing.domain'));
     }

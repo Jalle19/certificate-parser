@@ -3,12 +3,13 @@
 namespace Jalle19\CertificateParser\Tests\Provider;
 
 use Jalle19\CertificateParser\Provider\StreamContext;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class StreamContextTest
  * @package Jalle19\CertificateParser\Tests\Provider
  */
-class StreamContextTest extends \PHPUnit_Framework_TestCase
+class StreamContextTest extends TestCase
 {
 
     /**
@@ -43,7 +44,7 @@ class StreamContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getArrayProvider()
+    public static function getArrayProvider()
     {
         return [
             [

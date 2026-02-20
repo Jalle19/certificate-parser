@@ -2,14 +2,19 @@
 
 namespace Jalle19\CertificateParser\Tests\Provider;
 
+use Jalle19\CertificateParser\Provider\Exception\CertificateNotFoundException;
+use Jalle19\CertificateParser\Provider\Exception\ConnectionTimeoutException;
+use Jalle19\CertificateParser\Provider\Exception\DomainMismatchException;
+use Jalle19\CertificateParser\Provider\Exception\NameResolutionException;
 use Jalle19\CertificateParser\Provider\StreamContext;
 use Jalle19\CertificateParser\Provider\StreamSocketProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class StreamSocketProviderTest
  * @package Jalle19\CertificateParser\Tests\Provider
  */
-class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
+class StreamSocketProviderTest extends TestCase
 {
 
     /**
@@ -20,35 +25,33 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
     public function testProperCertificateHandling($url)
     {
         $provider = new StreamSocketProvider($url);
-        $this->assertTrue(is_resource($provider->getRawCertificate()));
+
+        $this->assertInstanceOf(\OpenSSLCertificate::class, $provider->getRawCertificate());
     }
 
 
-    /**
-     * @expectedException \Jalle19\CertificateParser\Provider\Exception\NameResolutionException
-     */
     public function testNonExistingDomain()
     {
+        $this->expectException(NameResolutionException::class);
+
         $provider = new StreamSocketProvider('example.does.not.exist');
         $provider->getRawCertificate();
     }
 
 
-    /**
-     * @expectedException \Jalle19\CertificateParser\Provider\Exception\CertificateNotFoundException
-     */
     public function testNoCertificateFound()
     {
+        $this->expectException(CertificateNotFoundException::class);
+
         $provider = new StreamSocketProvider('connectivitycheck.gstatic.com', 80);
         $provider->getRawCertificate();
     }
 
 
-    /**
-     * @expectedException \Jalle19\CertificateParser\Provider\Exception\DomainMismatchException
-     */
     public function testDomainMismatch()
     {
+        $this->expectException(DomainMismatchException::class);
+
         $provider = new StreamSocketProvider('wrong.host.badssl.com');
         $provider->getRawCertificate();
     }
@@ -62,15 +65,14 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
         $provider = new StreamSocketProvider('wrong.host.badssl.com', StreamSocketProvider::DEFAULT_PORT,
             StreamSocketProvider::DEFAULT_TIMEOUT_SECONDS, new StreamContext(false));
 
-        $this->assertTrue(is_resource($provider->getRawCertificate()));
+        $this->assertInstanceOf(\OpenSSLCertificate::class, $provider->getRawCertificate());
     }
 
 
-    /**
-     * @expectedException \Jalle19\CertificateParser\Provider\Exception\ConnectionTimeoutException
-     */
     public function testConnectionTimeoutException()
     {
+        $this->expectException(ConnectionTimeoutException::class);
+
         // Force a timeout to occur
         $provider = new StreamSocketProvider('example.com', 443, 0);
         $provider->getRawCertificate();
@@ -94,7 +96,7 @@ class StreamSocketProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function properCertificateProvider()
+    public static function properCertificateProvider(): array
     {
         return [
             // Completely valid

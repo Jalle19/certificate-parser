@@ -3,20 +3,21 @@
 namespace Jalle19\CertificateParser\Tests\Provider;
 
 use Jalle19\CertificateParser\Parser;
+use Jalle19\CertificateParser\Provider\Exception\FileNotFoundException;
 use Jalle19\CertificateParser\Provider\LocalFileProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class LocalFileProviderTest
  * @package Jalle19\CertificateParser\Tests\Provider
  */
-class LocalFileProviderTest extends \PHPUnit_Framework_TestCase
+class LocalFileProviderTest extends TestCase
 {
 
-    /**
-     * @expectedException \Jalle19\CertificateParser\Provider\Exception\FileNotFoundException
-     */
     public function testFileNotFound()
     {
+        $this->expectException(FileNotFoundException::class);
+
         new LocalFileProvider('/tmp/does-not-exist');
     }
 
