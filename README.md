@@ -1,6 +1,6 @@
 # certificate-parser
 
-[![Build Status](https://travis-ci.org/Jalle19/certificate-parser.svg?branch=travis)](https://travis-ci.org/Jalle19/certificate-parser)
+[![CI](https://github.com/Jalle19/certificate-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/Jalle19/certificate-parser/actions/workflows/ci.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Jalle19/certificate-parser/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Jalle19/certificate-parser/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/Jalle19/certificate-parser/badge.svg)](https://coveralls.io/github/Jalle19/certificate-parser)
 
