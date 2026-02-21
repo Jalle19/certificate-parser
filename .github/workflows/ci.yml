@@ -12,11 +12,14 @@ jobs:
   phpunit:
     name: phpunit
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
     steps:
       - uses: actions/checkout@v4
 
       - uses: php-actions/composer@v6
         with:
-          php_version: 8.2
+          php_version: ${{ matrix.version }}
 
       - run: composer run test
