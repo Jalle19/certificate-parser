@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55cfb95ab4fb717d282665348f6c30fd",
+    "content-hash": "257bcc12c1e40fd1e01fc77b62b257cd",
     "packages": [
         {
             "name": "acmephp/ssl",
@@ -1915,7 +1915,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">= 8.0",
+        "php": ">= 8.2",
         "ext-openssl": "*"
     },
     "platform-dev": [],
