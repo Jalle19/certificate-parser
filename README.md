@@ -25,7 +25,7 @@ exactly how you want each type of error to be handled.
 
 ## Requirements
 
-* PHP >= 7.0 with OpenSSL support
+* PHP >= 8.2 with OpenSSL support
 
 ## Installation
 
